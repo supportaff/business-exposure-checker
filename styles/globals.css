@@ -1,3 +1,183 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --green: #00ff41;
+  --green-dim: #00cc33;
+  --green-glow: rgba(0, 255, 65, 0.3);
+  --green-faint: rgba(0, 255, 65, 0.08);
+  --bg: #000000;
+  --bg-card: #050f05;
+  --bg-card2: #040d04;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: #e0ffe0;
+  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Grid background */
+.grid-bg {
+  background-color: #000;
+  background-image:
+    linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Glow text */
+.glow-text {
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green), 0 0 30px var(--green-glow), 0 0 60px rgba(0,255,65,0.15);
+}
+
+.glow-text-sm {
+  color: var(--green);
+  text-shadow: 0 0 6px var(--green-glow);
+}
+
+/* Glow border card */
+.glow-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(0,255,65,0.25);
+  box-shadow: 0 0 20px rgba(0,255,65,0.05), inset 0 0 20px rgba(0,255,65,0.02);
+  border-radius: 12px;
+}
+
+.glow-card:hover {
+  border-color: rgba(0,255,65,0.45);
+  box-shadow: 0 0 30px rgba(0,255,65,0.12), inset 0 0 20px rgba(0,255,65,0.04);
+}
+
+/* Green button */
+.btn-green {
+  background: transparent;
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-green::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--green);
+  transform: translateX(-100%);
+  transition: transform 0.2s;
+  z-index: 0;
+}
+
+.btn-green:hover::before { transform: translateX(0); }
+.btn-green:hover { color: #000; box-shadow: 0 0 20px var(--green-glow); }
+.btn-green span { position: relative; z-index: 1; }
+.btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Input */
+.input-green {
+  background: rgba(0,255,65,0.04);
+  border: 1px solid rgba(0,255,65,0.2);
+  color: var(--green);
+  font-family: 'Share Tech Mono', monospace;
+  outline: none;
+  transition: all 0.2s;
+}
+.input-green::placeholder { color: rgba(0,255,65,0.3); }
+.input-green:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 12px var(--green-glow);
+  background: rgba(0,255,65,0.07);
+}
+
+/* Score ring */
+.score-ring {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid;
+  position: relative;
+}
+
+/* Blinking cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor::after {
+  content: '_';
+  animation: blink 1s step-end infinite;
+  color: var(--green);
+}
+
+/* Pulse dot */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,255,65,0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(0,255,65,0); }
+}
+.pulse-dot {
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 1.5s infinite;
+  display: inline-block;
+}
+
+/* Scan line animation */
+@keyframes scan {
+  0% { top: -4px; }
+  100% { top: 100%; }
+}
+.scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to bottom, transparent, rgba(0,255,65,0.6), transparent);
+  animation: scan 2s linear infinite;
+  pointer-events: none;
+}
+
+/* Tag badge */
+.badge-critical { background: rgba(255,50,50,0.1); border: 1px solid rgba(255,50,50,0.4); color: #ff6060; }
+.badge-medium { background: rgba(255,180,0,0.1); border: 1px solid rgba(255,180,0,0.4); color: #ffb800; }
+.badge-low { background: rgba(0,255,65,0.08); border: 1px solid rgba(0,255,65,0.3); color: var(--green); }
+
+/* Divider */
+.green-divider { border-color: rgba(0,255,65,0.15); }
+
+/* Typing animation */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
